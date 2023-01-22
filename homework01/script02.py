@@ -1,11 +1,3 @@
-
-import names
-
-# import names
-
-# for i in range(5):
-#     print(names.get_full_name())
-
 import names
 
 names_with_eight = []
