@@ -1,0 +1,34 @@
+{
+  "sites": [
+    {
+      "site_id": 1,
+      "latitude": 16.612275668770295,
+      "longitude": 82.68503812892314,
+      "composition": "iron"
+    },
+    {
+      "site_id": 2,
+      "latitude": 16.751645760717036,
+      "longitude": 83.8526086827282,
+      "composition": "stony-iron"
+    },
+    {
+      "site_id": 3,
+      "latitude": 16.135582243500714,
+      "longitude": 83.05173443633804,
+      "composition": "iron"
+    },
+    {
+      "site_id": 4,
+      "latitude": 16.22395857395027,
+      "longitude": 83.33534030048006,
+      "composition": "stony"
+    },
+    {
+      "site_id": 5,
+      "latitude": 17.76509058721155,
+      "longitude": 83.64075329339593,
+      "composition": "iron"
+    }
+  ]
+}
