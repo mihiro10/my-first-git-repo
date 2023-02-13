@@ -15,7 +15,11 @@ for i in range(5):
                                 "composition": composition})
 
 print(sites_dict)
-with open("/home/mihiro10/coe-332/homework02/meteorite_sites.json", "w") as out:
-    json.dump(sites_dict, out, indent=2)
+
+with open('meteorite_sites.json', 'w') as out:
+   json.dump(sites_dict, out, indent=2)
+
+# with open("/home/mihiro10/coe-332/homework02/meteorite_sites.json", "w") as out:
+#     json.dump(sites_dict, out, indent=2)
 
 
