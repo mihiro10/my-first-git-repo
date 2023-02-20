@@ -17,10 +17,13 @@ The Flask app has three endpoints that provide information on the ISS's location
 /epochs/<epoch>/speed: Returns the speed of the ISS at a specific epoch as a dictionary.
 
 <h3>Install the required packages:</h3> 
+
 ```
 pip3 install --user xmltodict
 ```
+
 Running the app will require 2 terminals. Open two terminals and in the first one, run
+
 ```
 flask --app iss_tracker --debug run
 ```
