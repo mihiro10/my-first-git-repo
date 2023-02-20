@@ -25,6 +25,7 @@ Running the app will require 2 terminals. Open two terminals and in the first on
 flask --app iss_tracker --debug run
 ```
 In the second terminal, run 
+
 ```
 curl localhost:5000
 ```
