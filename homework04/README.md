@@ -19,8 +19,18 @@ The Flask app has three endpoints that provide information on the ISS's location
 <h3>Install the required packages:</h3> 
 
 ```
-pip3 install --user xmltodict
+pip3 install xmltodict
 ```
+
+```
+pip3 install flask
+```
+
+
+```
+ppip3 install requests
+```
+
 
 Running the app will require 2 terminals. Open two terminals and in the first one, run
 
