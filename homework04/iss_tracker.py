@@ -9,7 +9,7 @@ def get_data():
     url = 'https://nasa-public-data.s3.amazonaws.com/iss-coords/current/ISS_OEM/ISS.OEM_J2K_EPH.xml'
     response = requests.get(url)
     data = xmltodict.parse(response.text)
-    return data #['ndm']['oem']['header']
+    return data
 
 @app.route('/', methods = ['GET']) # default curl method
 def location():
