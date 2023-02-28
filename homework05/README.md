@@ -18,7 +18,7 @@ The data set used in this project is the ISS OEM data set published by NASA. The
 | `/epochs/<epoch>/speed` </code> | GET   |  Returns the speed of the ISS at a specific epoch as a dictionary. |
 | `/delete-data` </code> | DELETE   | Deletes the global data variable. |
 | `/get-data` </code> | POST | Retrieves the XML data again and updates the global data variable |
-| `/help` </code> | POST | Returns help text as a string. Gives info on all methods|
+| `/help` </code> | GET | Returns help text as a string. Gives info on all methods|
 
 `Dockerfile:` Is a document that contains the commands neccesary to containerize the iss_tracker docker image.
 
