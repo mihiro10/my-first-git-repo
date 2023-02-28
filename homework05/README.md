@@ -28,15 +28,21 @@ The data set used in this project is the ISS OEM data set published by NASA. The
 Step 1: 
 Run the following in the terminal to pull the docker container.
 
-<code>docker pull mihiro10/iss_tracker:hw05</code>
+```
+docker pull mihiro10/iss_tracker:hw05
+```
 
 Run,
 
-` docker run -it --rm -p 5000:5000 mihiro10/iss_tracker:hw05 `
+```
+docker run -it --rm -p 5000:5000 mihiro10/iss_tracker:hw05
+```
 
 Finally, in a seperate terminal, run the different desired methods.
 
-`curl localhost:5000/`
+```
+curl localhost:5000/
+```
 
 <h4>Method 2: Building the image from Dockerfile</h4>
 
@@ -292,3 +298,4 @@ This wil return
 ```
 All data has been updated successfully.
 ```
+This confirms that the data was restored and the other methods will work.
