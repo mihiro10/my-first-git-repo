@@ -17,15 +17,16 @@ def handle_data():
     if request.method == 'GET':
         output_list = []
         for item in rd.keys():
-            output_list.append(rd.hgetall(item))
+            output_list.append(json.loads(rd.get(item)))
         return output_list
     
     elif request.method == 'POST':
         response = requests.get(url= 'https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json')
-        for item in response.json()['response']:
-            key = f'{item["numFound"]}'
-            rd.hset(key, mapping=item)
+        for item in response.json()['response']['docs']:
+            key = f'{item["hgnc_id"]}'
+            rd.set(key,json.dumps(item))
         return 'data loaded\n'
+
 
     elif request.method == 'DELETE':
         rd.flushdb()
@@ -34,13 +35,47 @@ def handle_data():
     else:
         return 'the method you tried does not work\n'
     
+@app.route('/genes', methods = ['GET'])
+def gene_return() -> list:
+    '''
+    Creates and returns a list of all hgnc_ids
+
+    Args: NONE
+
+    Returns:
+        hgnc_list: List of all the hgnc IDs
+    '''
+    hgnc_list = []  # Initialize an empty list to store the hgnc_ids
+
+    # Iterate through all keys in the Redis database
+    for key in rd.keys():
+        key = key.decode('utf-8')  # Convert the key from bytes to a string
+        hgnc_list.append(key)  # Append the string key to the hgnc_list
+
+    return hgnc_list  # Return the list of all the hgnc_ids
 
 
-    # response = requests.get(url)
-    # response_json = response.json()
-    # with open('data.json', 'w') as f:
-    #     json.dump(response_json, f) 
-    # return()
+
+@app.route('/genes/<hgnc_id>', methods = ['GET'])
+def specific_gene(hgnc_id):
+    '''
+    Return all data associated with <hgnc_id>
+    ROUTE: /gene/<hgnc_id>
+    Args:
+        hgnc_id:    The unique hgnc ID of the gene in the data set
+    
+    Returns:
+        all data associated with the given <hgnc_id>
+    '''
+
+    if len(rd.keys()) == 0:
+        return "Database is empty, please post the data first\n"
+
+    for key in rd.keys():
+        if key.decode('utf-8') == hgnc_id:
+            return json.loads(rd.get(key))
+
+    return "The given ID did not match any IDs in the Data base\n"
 
 
 if __name__ == '__main__':
