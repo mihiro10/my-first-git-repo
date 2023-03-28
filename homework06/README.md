@@ -16,16 +16,95 @@ response = requests.get(url)
 
 <h2>Scripts</h2>
 
-+-------------------------+------------+--------------------------------------------+
-| **Route**               | **Method** | **What it does**                      |
-+-------------------------+------------+--------------------------------------------+
-| ``/data``               | POST       | Puts data into Redis                        |
-+-------------------------+------------+--------------------------------------------+
-| ``/data``               | GET        | Returns all data from Redis                 |
-+-------------------------+------------+--------------------------------------------+
-| ``/data``               | DELETE     | Deletes data in Redis                       |
-+-------------------------+------------+--------------------------------------------+
-| ``/genes``              | GET        | Returns json-formatted list of all hgnc_ids |
-+-------------------------+------------+--------------------------------------------+
-| ``/genes/<hgnc_id>``    | GET        | Returns all data associated with <hgnc_id>  |
-+-------------------------+------------+--------------------------------------------+
+`gene_api.py` - This Flask app is designed to retrieve information from genome data. Once the data is loaded, the app offers Flask routes that allow users to browse through the data and locate particular data points with their corresponding values. Here are the routes and their corresponding outputs.
+
+| Route  | Method   | What it does     |
+| ----------- | -------- | ----------- |
+| `/data`      | GET |Returns all data from Redis |
+| `/data`      | POST |Puts data into Redis |
+| `/data`      | DELETE |Deletes data in Redis|
+| `/genes`      | GET |Returns json-formatted list of all hgnc_ids |
+| `/genes/<hgnc_id>`      | GET |Returns all data associated with <hgnc_id>|
+
+`Dockerfile` - Document that consists of instructions for creating the gene_api Docker image. This image is utilized to generate a Docker container when executed.
+
+`docker-compose.yml` - YAML script that ochestrates the containerization process and port mapping between the Flask application and Redis database.
+
+
+
+<h3>How to Run the Scripts</h3>
+
+<h4>First step</h4> 
+Once the github repository is pulled and cd into the homework06 directory. Then run the following command
+```
+mkdir data
+```
+This makes sure that the data is stored correctly in redis
+
+<h4>Method 1: Pulling the prebuilt image</h4>
+
+```
+docker pull mihiro10/gene_api:1.0
+```
+
+Then, in the terminal type
+
+```
+docker-compose up
+```
+
+Open a separate terminal to run curl commands such as
+```
+curl localhost:5000/data -X POST
+```
+
+<h4>Method 2: Builidng the image from dockerfile</h4>
+
+
+To build the image using the dockerfile, run
+```
+docker build -t <username>/genes:<tag> .
+```
+
+To launch the Flask app using the newly built image, change the image name in yaml file 
+```
+version: "3"
+
+services:
+    redis-db:
+        image: redis:7
+        ports:
+            - 6379:6379
+        volumes:
+            - ./data:/data
+        user: "1000:1000"
+    flask-app:
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+        depends_on:
+            - redis-db
+        image: <username>/genes:<tag>
+        ports:
+            - 5000:5000
+        volumes:
+            - ./config.yaml:/config.yaml
+```
+Then, in your terminal run
+```
+docker-compose up
+```
+
+Open a separate terminal to run curl commands such as
+```
+curl localhost:5000/data -X POST
+```
+
+<h3>Flask app example responses</h3>
+
+*Make sure the data is loaded into the redis database for the routes to properly work*
+
+
+
+
+
