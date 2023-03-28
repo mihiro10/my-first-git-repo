@@ -63,7 +63,7 @@ curl localhost:5000/data -X POST
 
 To build the image using the dockerfile, run
 ```
-docker build -t <username>/genes:<tag> .
+docker build -t <username>/gene_api:<tag> .
 ```
 
 To launch the Flask app using the newly built image, change the image name in yaml file 
@@ -84,7 +84,7 @@ services:
             dockerfile: ./Dockerfile
         depends_on:
             - redis-db
-        image: <username>/genes:<tag>
+        image: <username>/gene_api:<tag>
         ports:
             - 5000:5000
         volumes:
@@ -102,9 +102,166 @@ curl localhost:5000/data -X POST
 
 <h3>Flask app example responses</h3>
 
-*Make sure the data is loaded into the redis database for the routes to properly work*
+*Make sure the data is loaded into the redis database for the routes to properly work. If the mkdir is not completed before, it will return an error*
+
+---
+```
+curl localhost:5000/data -X POST
+```
+Returns
+
+```
+data loaded
+```
+----
+```
+curl localhost:5000/data -X GET
+```
+Returns
+
+```
+[...
+  {
+    "_version_": 1761599372646154240,
+    "agr": "HGNC:5383",
+    "alias_symbol": [
+      "IDH-2"
+    ],
+    "ccds_id": [
+      "CCDS10359",
+      "CCDS76792"
+    ],
+    "cosmic": "IDH2",
+    "date_approved_reserved": "1986-01-01",
+    "date_modified": "2023-01-20",
+    "date_name_changed": "2019-07-08",
+    "ensembl_gene_id": "ENSG00000182054",
+    "entrez_id": "3418",
+    "enzyme_id": [
+      "1.1.1.42"
+    ],
+    "gencc": "HGNC:5383",
+    "gene_group": [
+      "Isocitrate dehydrogenases"
+    ],
+    "gene_group_id": [
+      1926
+    ],
+    "hgnc_id": "HGNC:5383",
+    "iuphar": "objectId:2885",
+    "location": "15q26.1",
+    "location_sortable": "15q26.1",
+    "locus_group": "protein-coding gene",
+    "locus_type": "gene with protein product",
+    "lsdb": [
+      "LRG_611|http://ftp.ebi.ac.uk/pub/databases/lrgex/LRG_611.xml"
+    ],
+    "mane_select": [
+      "ENST00000330062.8",
+      "NM_002168.4"
+    ],
+    "mgd_id": [
+      "MGI:96414"
+    ],
+    "name": "isocitrate dehydrogenase (NADP(+)) 2",
+    "omim_id": [
+      "147650"
+    ],
+    "orphanet": 247145,
+    "prev_name": [
+      "isocitrate dehydrogenase 2 (NADP+), mitochondrial",
+      "isocitrate dehydrogenase (NADP(+)) 2, mitochondrial"
+    ],
+    "refseq_accession": [
+      "NM_001289910"
+    ],
+    "rgd_id": [
+      "RGD:1597139"
+    ],
+    "status": "Approved",
+    "symbol": "IDH2",
+    "symbol_report_tag": [
+      "Stable symbol"
+    ],
+    "ucsc_id": "uc002box.4",
+    "uniprot_ids": [
+      "P48735"
+    ],
+    "uuid": "2e7c51ab-9907-4b47-90c7-697b2cb0b7c6",
+    "vega_id": "OTTHUMG00000149815"
+  }
+]
+```
+---
+
+```
+curl localhost:5000/data -X DELETE
+```
+Returns
+```
+data deleted there are [] keys in the db
+```
+
+---
+
+```
+curl localhost:5000/genes -X GET
+```
+Returns
 
 
+```
+[...
+  "HGNC:50395",
+  "HGNC:37920",
+  "HGNC:39828",
+  "HGNC:14943",
+  "HGNC:27747",
+  "HGNC:39434",
+  "HGNC:17346",
+  "HGNC:41933",
+  "HGNC:35476",
+  "HGNC:46986",
+  "HGNC:56695",
+  "HGNC:5383"
+]
+```
+---
 
-
-
+```
+curl localhost:5000/genes/"HGNC:56695" -X GET
+```
+returns
+```
+{
+  "_version_": 1761599398581633025,
+  "alias_name": [
+    "Twist1 Associated Long Noncoding RNA regulated by AR"
+  ],
+  "date_approved_reserved": "2023-01-13",
+  "date_modified": "2023-01-13",
+  "ensembl_gene_id": "ENSG00000223991",
+  "entrez_id": "128266846",
+  "gene_group": [
+    "Long non-coding RNAs with non-systematic symbols"
+  ],
+  "gene_group_id": [
+    1992
+  ],
+  "hgnc_id": "HGNC:56695",
+  "location": "2q37.3",
+  "location_sortable": "02q37.3",
+  "locus_group": "non-coding RNA",
+  "locus_type": "RNA, long non-coding",
+  "name": "TWIST1 associated long noncoding RNA regulated by androgen receptor",
+  "pubmed_id": [
+    33510354
+  ],
+  "rna_central_id": [
+    "URS000060F02B"
+  ],
+  "status": "Approved",
+  "symbol": "TANAR",
+  "uuid": "ab4d841b-2d71-4030-9ad4-1096cbc3c81e"
+}
+```

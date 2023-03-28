@@ -13,6 +13,26 @@ rd = get_redis_client()
 
 @app.route('/data', methods = ['POST', 'GET', 'DELETE'])
 def handle_data():
+
+    '''
+        Manipulates data with GET, POST, and DELETE methods
+    
+        Args: 
+        - None
+
+        Methods:
+
+        - "POST" method: posts data into redis database
+        - "GET" method: returns data from redis database
+        - "DELETE" method: deletes all data in the redis database
+
+
+        Returns:
+        - "POST" method: String that confirms data was posted
+        - "GET" method: returns data from redis databse as a list of dictionaries
+        - "DELETE" method: String that confirms data deletion
+            
+    '''
     
     if request.method == 'GET':
         output_list = []
@@ -40,10 +60,11 @@ def gene_return() -> list:
     '''
     Creates and returns a list of all hgnc_ids
 
-    Args: NONE
+    Args: 
+    - NONE
 
     Returns:
-        hgnc_list: List of all the hgnc IDs
+    - hgnc_list: List of all the hgnc IDs
     '''
     hgnc_list = []  # Initialize an empty list to store the hgnc_ids
 
@@ -57,25 +78,25 @@ def gene_return() -> list:
 
 
 @app.route('/genes/<hgnc_id>', methods = ['GET'])
-def specific_gene(hgnc_id):
+def specific_gene(hgnc_id:str) -> dict:
     '''
     Return all data associated with <hgnc_id>
     ROUTE: /gene/<hgnc_id>
     Args:
-        hgnc_id:    The unique hgnc ID of the gene in the data set
+    - hgnc_id:    The unique hgnc ID of the gene in the data set
     
     Returns:
-        all data associated with the given <hgnc_id>
+    - all data associated with the given <hgnc_id>
     '''
 
     if len(rd.keys()) == 0:
         return "Database is empty, please post the data first\n"
 
     for key in rd.keys():
-        if key.decode('utf-8') == hgnc_id:
+        if key.decode('utf-8') == hgnc_id: #finding the matching id
             return json.loads(rd.get(key))
 
-    return "The given ID did not match any IDs in the Data base\n"
+    return "The given ID did not match any IDs in the database\n"
 
 
 if __name__ == '__main__':
