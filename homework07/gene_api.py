@@ -8,7 +8,7 @@ data = {}
 
 
 def get_redis_client():
-    return redis.Redis(host='homework07_redis-db_1', port=6379, db=0)
+    return redis.Redis(host='mihiro10-test-redis-service', port=6379, db=0)
 rd = get_redis_client()
 
 @app.route('/data', methods = ['POST', 'GET', 'DELETE'])
