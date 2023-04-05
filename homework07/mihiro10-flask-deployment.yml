@@ -22,7 +22,7 @@ spec:
           image: mihiro10/gene_api:hw7.1
           imagePullPolicy: Always
           env:
-            - name: REDIS_HOST
-              value: lucal-test-redis-service
+            - name: mihiro10-test-redis-service
+              value: mihiro10-test-redis-service
           ports:
             - containerPort: 5000
