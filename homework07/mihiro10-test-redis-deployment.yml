@@ -1,1 +1,27 @@
-test
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mihiro10-test-redis
+  labels:
+    app: mihiro10-test-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mihiro10-test-redis
+  template:
+    metadata:
+      labels:
+        app: mihiro10-test-redis
+    spec:
+      containers:
+        - name: mihiro10-test-redis
+          imagePullPolicy: Always
+          image: redis:7
+          env:
+          - name: mihiro10-test-redis
+            value: "app.py"
+          ports:
+          - name: http
+            containerPort: 5000
