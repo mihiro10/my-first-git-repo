@@ -38,22 +38,24 @@ def ret_image():
     '''
     Manipulates image data with GET, POST, and DELETE methods
     
-    Args: None
+    Args:
+    - None
+
     Methods:
-        "DELETE" method: deletes all data in redis db
-        "POST" method: posts plot into redis db
+        - "DELETE": deletes all data in redis db
+        - "POST": method: posts plot into redis db
         "GET" method: returns plot from redis db
     Returns:
-        "DELETE" method: String confirming data deletion
-        "POST" method: String confirming data posted
-        "GET" method: returns plot from redis db in a file specified by udes
+        - "DELETE": String confirming data deletion
+        - "POST: String confirming data posted
+        - "GET": returns plot from redis db in a file type specified by user
         
     '''
 
 
     if request.method == 'GET':
         if(len(rd_image.keys())== 0):
-            return "No image in the database. use /image -X POST first.\n"
+            return "There is no image in DB use /image -X POST first.\n"
         else:
             plot_bytes = rd_image.get("Plot")
 
@@ -67,28 +69,31 @@ def ret_image():
     # Make plot of Date vs ID number
     elif request.method == 'POST':
         if(len(rd.keys()) == 0):
-            return "No data to create image from. please use /data -X POST first.\n"
+            return "No data that can be used to create image. run use /data -X POST first.\n"
         else:
-            daysSince2000List = []
-            HGNClist = []
+            days_since_2000_list = []
+            HGNC_list = []
             for item in rd.keys():
-                
+                #loading key value
                 value = rd.get(item).decode('utf-8')
                 value = json.loads(value)
+
+                #date values 
                 date_str = value["date_approved_reserved"]
                 parsed_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-
                 reference_date = date(2000, 1, 1)
+
+                #determining the delta
                 delta = parsed_date - reference_date
                 days_since_2000 = delta.days
-                daysSince2000List.append(days_since_2000)
-                HGNClist.append(int(value["hgnc_id"][5:]))
+                days_since_2000_list.append(days_since_2000)
+                HGNC_list.append(int(value["hgnc_id"][5:]))
 
             fig, ax = plt.subplots()
-            ax.scatter(daysSince2000List, HGNClist,s=5,alpha=0.5)
-            ax.set_title('ID Number vs Date Approved')
-            ax.set_xlabel('Days since approval. Reference: January 1, 2000')
-            ax.set_ylabel('HGNC ID number')
+            ax.scatter(days_since_2000_list, HGNC_list,s=8,alpha=0.5)
+            ax.set_title('ID # vs Approved Date')
+            ax.set_xlabel('Days since approval. January 1, 2000')
+            ax.set_ylabel('HGNC ID #')
 
             buf = io.BytesIO()
             plt.savefig(buf, format='png')
