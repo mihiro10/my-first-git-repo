@@ -71,7 +71,7 @@ def ret_image():
         if(len(rd.keys()) == 0):
             return "No data that can be used to create image. run use /data -X POST first.\n"
         else:
-            days_since_2000_list = []
+            days_since_1990_list = []
             HGNC_list = []
             for item in rd.keys():
                 #loading key value
@@ -81,18 +81,18 @@ def ret_image():
                 #date values 
                 date_str = value["date_approved_reserved"]
                 parsed_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-                reference_date = date(2000, 1, 1)
+                reference_date = date(1990, 1, 1)
 
                 #determining the delta
                 delta = parsed_date - reference_date
-                days_since_2000 = delta.days
-                days_since_2000_list.append(days_since_2000)
+                days_since_1990 = delta.days
+                days_since_1990_list.append(days_since_1990)
                 HGNC_list.append(int(value["hgnc_id"][5:]))
 
             fig, ax = plt.subplots()
-            ax.scatter(days_since_2000_list, HGNC_list,s=8,alpha=0.5)
+            ax.scatter(days_since_1990_list, HGNC_list,s=8,alpha=0.5)
             ax.set_title('ID # vs Approved Date')
-            ax.set_xlabel('Days since approval. January 1, 2000')
+            ax.set_xlabel('Days since approval. January 1, 1990')
             ax.set_ylabel('HGNC ID #')
 
             buf = io.BytesIO()
@@ -105,7 +105,7 @@ def ret_image():
 
     elif request.method == 'DELETE':
         rd_image.flushdb()
-        return f'Plot has ben deleted. There are {len(rd_image.keys())} plots in the db\n'
+        return f'Plot has ben deleted. There are no plots in the db\n'
 
     
     
