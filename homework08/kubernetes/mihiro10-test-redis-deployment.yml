@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mihiro10-test-redis-deployment
+  labels:  
+    username: mihiro10
+    env: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      username: mihiro10
+      env: test
+  template:
+    metadata:
+      labels:
+        app: mihiro10-test-redis
+        username: mihiro10
+        env: test
+    spec:
+      containers:
+        - name: redis
+          imagePullPolicy: Always
+          image: redis:7
+          env:
+          - name: FLASK_APP
+            value: "gene_api.py"
+          ports:
+          - name: http
+            containerPort: 6379
+          volumeMounts:
+          - name: redis-data
+            mountPath: /data
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: mihiro10-test-redis-pvc

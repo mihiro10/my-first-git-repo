@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mihiro10-test-flask-service
+  labels:
+    username: mihiro10
+    env: test
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 5000
+    targetPort: 5000
+  selector:
+    app: mihiro10-test-flask
+    username: mihiro10
+    env: test
